@@ -1,13 +1,17 @@
 {
   "name": "algorand-reader",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "An algorand reader for blockchain",
   "keywords": [
     "algorand",
     "blockchain",
     "reader"
   ],
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
   "author": "ernesthope.algo",
   "license": "MIT",
   "scripts": {
@@ -19,7 +23,8 @@
   },
   "private": false,
   "dependencies": {
-    "algosdk": "^1.22.0"
+    "algosdk": "^1.22.0",
+    "typescript": "^4.8.4"
   },
   "devDependencies": {
     "@types/jest": "^29.2.0",

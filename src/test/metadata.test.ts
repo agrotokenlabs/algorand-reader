@@ -15,7 +15,6 @@ describe('MetadataTest: Happy Path', () => {
     expect(metadataInfo).toEqual(nftMetadata)
   })
 
-  // FIXME: This test is failing because the metadata is not being returned
   // it('Should the the asset by it metadata hash', async () => {
   //   const hash = 'this is a hash'
   //   const asset = await metadata.getAssetIdByMetadataHash(client, hash, address)

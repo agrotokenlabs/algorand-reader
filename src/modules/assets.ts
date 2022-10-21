@@ -1,22 +1,26 @@
-import { Algodv2 } from 'algosdk'
+import algosdk from 'algosdk'
 import { Asset, AssetInfo } from './common/types'
 
 function getAccountAttribute(account: Record<string, unknown>, name: string) {
   return account[name]
 }
 
-async function getAssets(client: Algodv2, address: string) {
+async function getAssets(client: algosdk.Algodv2, address: string) {
   const account = await client.accountInformation(address).do()
   const assets = getAccountAttribute(account, 'assets')
   return assets
 }
 
-async function findAsset(client: Algodv2, address: string, asaId: number) {
+async function findAsset(
+  client: algosdk.Algodv2,
+  address: string,
+  asaId: number
+) {
   const assets = (await getAssets(client, address)) as Asset[]
   return assets.find((asa: Asset) => asa['asset-id'] === asaId)
 }
 
-async function getCirculatingSupply(client: Algodv2, asaId: number) {
+async function getCirculatingSupply(client: algosdk.Algodv2, asaId: number) {
   const asa = await client.getAssetByID(asaId).do()
   const asaParams = asa['params']
   const reserve = asaParams.reserve
@@ -33,7 +37,7 @@ async function getCirculatingSupply(client: Algodv2, asaId: number) {
  * @returns: AssetInfo[]
  */
 export async function getCreatedAssets(
-  client: Algodv2,
+  client: algosdk.Algodv2,
   address: string
 ): Promise<AssetInfo[]> {
   const account = await client.accountInformation(address).do()
@@ -52,7 +56,7 @@ export async function getCreatedAssets(
  * @returns: number
  */
 export async function getAsaBalance(
-  client: Algodv2,
+  client: algosdk.Algodv2,
   address: string,
   asaId: number
 ): Promise<number> {
@@ -69,7 +73,7 @@ export async function getAsaBalance(
  * @returns: boolean
  */
 export async function isOptIn(
-  client: Algodv2,
+  client: algosdk.Algodv2,
   address: string,
   asaId: number
 ): Promise<boolean> {
@@ -85,7 +89,7 @@ export async function isOptIn(
  * @returns: number
  */
 export async function getTokenCirculatingSupply(
-  client: Algodv2,
+  client: algosdk.Algodv2,
   asaId: number
 ): Promise<number> {
   const circulating = await getCirculatingSupply(client, asaId)

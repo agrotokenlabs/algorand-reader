@@ -29,10 +29,9 @@ async function getAsaCreationTx(indexer: Indexer, assetId: number) {
  */
 export async function getAssetIdByMetadataHash(
   client: Algodv2,
-  hashKey: string,
+  hash: string,
   creator: string
 ): Promise<number> {
-  const hash = createHash('sha256').update(hashKey, 'utf8').digest('base64')
   const assets = (await getCreatedAssets(client, creator)) as AssetInfo[]
   const asset = assets.find((asa) => asa['params']['metadata-hash'] == hash)
   return asset == undefined ? -1 : asset.index
