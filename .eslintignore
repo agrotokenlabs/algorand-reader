@@ -1,0 +1,9 @@
+# /node_modules/* in the project root is ignored by default
+.deploy/
+.vscode/
+
+# build artefacts
+dist/
+build/
+public/
+coverage/
