@@ -1,87 +1,103 @@
-# Algorand Reader
+# Algorand Reader v1.0.4
 
-One Paragraph of project description goes here
+Algorand reader provides a set of functions to read the Algorand blockchain status.
+It allows to get balances, check opt-in, get nft metadata ARC-69 compliant and more.
 
-## Getting Started
+## Installing
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Install the package
 
-### Prerequisites
-
-What things you need to install the software and how to install them
-
-```
-Give examples
+```bash
+npm install algorand-reader
 ```
 
-### Installing
+## Requisites
 
-A step by step series of examples that tell you how to get a development env running
+Most of the functions uses an Algodv2 client and an Indexer client, you could set up a [sandbox](https://github.com/algorand/sandbox.git) or use an [external provider](https://algonode.io/api/#free-as-in--algorand-api-access).
 
-Say what the step will be
+```javascript
+// Algodv2 client using sandbox
+const token = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+const server = 'http://localhost'
+const port = 4001
+const algodClient = new algosdk.Algodv2(token, server, port)
 
-```
-Give the example
-```
+// Indexer client using sandbox
+const token = ''
+const server = 'http://localhost'
+const port = 8980
+const indexerClient = new algosdk.Indexer(token, server, port)
 
-And repeat
+// Algodv2 client using a provider like AlgoNode on testnet
+const token = ''
+const server = 'https://testnet-api.algonode.cloud'
+const port = 443
+const client = new algosdk.Algodv2(token, server, port)
 
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
+// Indexer client using a provider like AlgoNode on testnet
+const token = ''
+const server = 'https://testnet-idx.algonode.cloud'
+const port = 443
+const indexerClient = new algosdk.Indexer(token, server, port)
 ```
 
-## Deployment
+## Examples
 
-Add additional notes about how to deploy this on a live system
+### Get account balance and min balance
 
-## Built With
+```javascript
+import * as reader from 'algorand-reader'
 
-- [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-- [Maven](https://maven.apache.org/) - Dependency Management
-- [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+const address = 'SXPXEGTVZBIU56NDZC6HA3HZVHAD7CSYECQ2RIKYLMB6KOG43K7UBRGFPI'
 
-## Contributing
+const token = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+const server = 'http://localhost'
+const port = 4001
+const client = new algosdk.Algodv2(token, server, port)
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+// Check if an account is valid
+await reader.validateAddress(address)
 
-## Versioning
+// Get balance in algos
+await reader.getBalanceAlgos(client, address)
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+// Get balance in microalgos
+await reader.getBalanceMicroalgos(client, address)
 
-## Authors
+// Get min balance
+await reader.getMinBalance(client, address)
+```
 
-- **Billie Thompson** - _Initial work_ - [PurpleBooth](https://github.com/PurpleBooth)
+### Get asa account balance and check if the account is opt-in
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+```javascript
+const asaId = 113619241
 
-## License
+// Get created asset by an account
+await reader.getCreatedAssets(client, address)
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+// Get asa balance from an account
+await reader.getAsaBalance(client, address, asaId)
 
-## Acknowledgments
+// Check if the account is opted-in to an asa
+await reader.isOptIn(client, address, asaId)
 
-- Hat tip to anyone whose code was used
-- Inspiration
-- etc
+// Get circulating supply of an asa
+await reader.getTokenCirculatingSupply(client, testId)
+```
+
+### Get metadata from an asa with ARC-69 standard
+
+```javascript
+const token = ''
+const server = 'http://localhost'
+const port = 8980
+const indexerClient = new algosdk.Indexer(token, server, port)
+
+const nftId = 117345116
+
+// Get metadata from the NFT
+await reader.getAssetMetadata(indexerClient, nftId)
+```
+
+### Feel free to file issues, PR and make suggestions, Thanks! 🚀
