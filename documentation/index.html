@@ -28,20 +28,85 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content overview">
+               <div class="content getting-started">
                    <div class="content-data">
 
+<h1 id="algorand-reader-v104">Algorand Reader v1.0.4</h1>
+<p>Algorand reader provides a set of functions to read the Algorand blockchain status.
+It allows to get balances, check opt-in, get nft metadata ARC-69 compliant and more.</p>
+<h2 id="installing">Installing</h2>
+<p>Install the package</p>
+<div><pre class="line-numbers"><code class="language-bash">npm install algorand-reader</code></pre></div><h2 id="requisites">Requisites</h2>
+<p>Most of the functions uses an Algodv2 client and an Indexer client, you could set up a <a href="https://github.com/algorand/sandbox.git">sandbox</a> or use an <a href="https://algonode.io/api/#free-as-in--algorand-api-access">external provider</a>.</p>
+<div><pre class="line-numbers"><code class="language-javascript">// Algodv2 client using sandbox
+const token = &#39;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&#39;
+const server = &#39;http://localhost&#39;
+const port = 4001
+const algodClient = new algosdk.Algodv2(token, server, port)
 
-<ol class="breadcrumb">
-    <li>Overview</li>
-</ol>
-    
-<div class="tab-content overview">
-    <div class="row">
-    </div>
-</div>
-<script src="js/libs/svg-pan-zoom.min.js"></script>
-<script src="js/svg-pan-zoom.controls.js"></script> 
+// Indexer client using sandbox
+const token = &#39;&#39;
+const server = &#39;http://localhost&#39;
+const port = 8980
+const indexerClient = new algosdk.Indexer(token, server, port)
+
+// Algodv2 client using a provider like AlgoNode on testnet
+const token = &#39;&#39;
+const server = &#39;https://testnet-api.algonode.cloud&#39;
+const port = 443
+const client = new algosdk.Algodv2(token, server, port)
+
+// Indexer client using a provider like AlgoNode on testnet
+const token = &#39;&#39;
+const server = &#39;https://testnet-idx.algonode.cloud&#39;
+const port = 443
+const indexerClient = new algosdk.Indexer(token, server, port)</code></pre></div><h2 id="examples">Examples</h2>
+<h3 id="get-account-balance-and-min-balance">Get account balance and min balance</h3>
+<div><pre class="line-numbers"><code class="language-javascript">import * as reader from &#39;algorand-reader&#39;
+
+const address = &#39;SXPXEGTVZBIU56NDZC6HA3HZVHAD7CSYECQ2RIKYLMB6KOG43K7UBRGFPI&#39;
+
+const token = &#39;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&#39;
+const server = &#39;http://localhost&#39;
+const port = 4001
+const client = new algosdk.Algodv2(token, server, port)
+
+// Check if an account is valid
+await reader.validateAddress(address)
+
+// Get balance in algos
+await reader.getBalanceAlgos(client, address)
+
+// Get balance in microalgos
+await reader.getBalanceMicroalgos(client, address)
+
+// Get min balance
+await reader.getMinBalance(client, address)</code></pre></div><h3 id="get-asa-account-balance-and-check-if-the-account-is-opt-in">Get asa account balance and check if the account is opt-in</h3>
+<div><pre class="line-numbers"><code class="language-javascript">const asaId = 113619241
+
+// Get created asset by an account
+await reader.getCreatedAssets(client, address)
+
+// Get asa balance from an account
+await reader.getAsaBalance(client, address, asaId)
+
+// Check if the account is opted-in to an asa
+await reader.isOptIn(client, address, asaId)
+
+// Get circulating supply of an asa
+await reader.getTokenCirculatingSupply(client, testId)</code></pre></div><h3 id="get-metadata-from-an-asa-with-arc-69-standard">Get metadata from an asa with ARC-69 standard</h3>
+<div><pre class="line-numbers"><code class="language-javascript">const token = &#39;&#39;
+const server = &#39;http://localhost&#39;
+const port = 8980
+const indexerClient = new algosdk.Indexer(token, server, port)
+
+const nftId = 117345116
+
+// Get metadata from the NFT
+await reader.getAssetMetadata(indexerClient, nftId)</code></pre></div><h3 id="feel-free-to-file-issues-pr-and-make-suggestions-thanks-🚀">Feel free to file issues, PR and make suggestions, Thanks! 🚀</h3>
+
+
+
 
 
 
@@ -85,7 +150,7 @@
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 0;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'overview';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'getting-started';
             var COMPODOC_CURRENT_PAGE_URL = 'index.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
