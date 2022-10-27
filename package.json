@@ -1,5 +1,5 @@
 {
-  "name": "algorand-reader",
+  "name": "@agrotokenlabs/algorand-reader",
   "version": "1.0.4",
   "description": "An algorand reader for blockchain",
   "keywords": [
@@ -20,6 +20,9 @@
   "homepage": "https://github.com/agrotokenlabs/algorand-reader",
   "bugs": {
     "url": "https://github.com/agrotokenlabs/algorand-reader/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "private": false,
   "dependencies": {
