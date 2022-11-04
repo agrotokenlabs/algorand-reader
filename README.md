@@ -67,4 +67,14 @@ const nftId = 117345116
 await reader.getAssetMetadata(indexerClient, nftId)
 ```
 
+### Transactions
+
+```javascript
+// Get the pending transactions for a given account
+await reader.getPendingTx(address)
+
+// Get a true if the account has pending transactions
+await reader.thereArePendingTxs(address)
+```
+
 ### Feel free to file issues, PR and make suggestions, Thanks! 🚀

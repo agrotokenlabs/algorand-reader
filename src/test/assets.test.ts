@@ -60,37 +60,39 @@ describe('AssetsTest: Happy Path', () => {
 })
 
 describe('AssetsTest: Unhappy Path', () => {
+  const reader = new Reader(ENetworks.TESTNET)
+
   it('Should throw an error if the address is not valid: getCreatedAssets', async () => {
     await expect(
-      assets.getCreatedAssets(client, nonValidAddress)
+      reader.getCreatedAssets(test.nonValidAddress)
     ).rejects.toThrow()
   })
 
   it('Should throw an error if the address is not valid: getAsaBalance', async () => {
-    const createdAssets = await assets.getCreatedAssets(client, address)
+    const createdAssets = await reader.getCreatedAssets(test.address)
     const asaId = createdAssets[0].index
     await expect(
-      assets.getAsaBalance(client, nonValidAddress, asaId)
+      reader.getAsaBalance(test.nonValidAddress, asaId)
     ).rejects.toThrow()
   })
 
   it('Should throw an error if the address is not valid: isOptIn', async () => {
     await expect(
-      assets.isOptIn(client, nonValidAddress, asaId)
+      reader.isOptIn(test.nonValidAddress, test.asaId)
     ).rejects.toThrow()
   })
 
   describe('MetadataTest: Unhappy Path', () => {
     it('Should throw an error if the asset does not exist', async () => {
-      await expect(metadata.getAssetMetadata(indexer, 0)).rejects.toThrow()
+      await expect(reader.getAssetMetadata(0)).rejects.toThrow()
     })
 
     it('Should throw an error if the asset does not have a note', async () => {
-      await expect(metadata.getAssetMetadata(indexer, testId)).rejects.toThrow()
+      await expect(reader.getAssetMetadata(test.testId)).rejects.toThrow()
     })
 
     it('Should throw an error if the asset does not have metadata', async () => {
-      await expect(metadata.getAssetMetadata(indexer, asaId)).rejects.toThrow()
+      await expect(reader.getAssetMetadata(test.asaId)).rejects.toThrow()
     })
   })
 })
