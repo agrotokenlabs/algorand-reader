@@ -1,5 +1,5 @@
 import algosdk from 'algosdk'
-import { Asset, AssetInfo } from './common/types'
+import { Asset, AssetInfo } from '../common/types'
 
 function getAccountAttribute(account: Record<string, unknown>, name: string) {
   return account[name]
