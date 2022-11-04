@@ -64,6 +64,11 @@ export type AccountInformation = {
   'total-created-assets': number
 }
 
+export type PendingTxs = {
+  'top-transactions': []
+  'total-transactions': number
+}
+
 export enum ENetworks {
   LOCAL,
   TESTNET,

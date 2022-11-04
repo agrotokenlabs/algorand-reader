@@ -2,6 +2,7 @@ import algosdk from 'algosdk'
 import * as accounts from './modules/accounts'
 import * as assets from './modules/assets'
 import * as common from './modules/common'
+import * as transactions from './modules/transactions'
 
 export class Reader {
   algod: algosdk.Algodv2
@@ -75,5 +76,17 @@ export class Reader {
     return assets.getAssetMetadata(this.indexer, assetId)
   }
 
-  // TODO: pending txs by address
+  /** Returns the pending transactions for an address
+   *  'top-transactions': []
+   *  'total-transactions': number
+   */
+  async getPendingTx(address: string): Promise<unknown> {
+    return transactions.getPendingTxByAddress(this.algod, address)
+  }
+
+  /** Returns true if there is
+   * the pending transactions for an address */
+  async thereArePendingTxs(address: string): Promise<boolean> {
+    return transactions.thereArePendingTxs(this.algod, address)
+  }
 }
