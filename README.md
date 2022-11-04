@@ -1,4 +1,4 @@
-# Algorand Reader v1.0.4
+# Algorand Reader v1.1.0
 
 Algorand reader provides a set of functions to read the Algorand blockchain status.
 It allows to get balances, check opt-in, get nft metadata ARC-69 compliant and more.
@@ -13,32 +13,17 @@ npm install algorand-reader
 
 ## Requisites
 
-Most of the functions uses an Algodv2 client and an Indexer client, you could set up a [sandbox](https://github.com/algorand/sandbox.git) or use an [external provider](https://algonode.io/api/#free-as-in--algorand-api-access).
+Most of the functions uses an Algodv2 client and an Indexer client, if you don't specifies any the reader will use default algonode service (Testnet and Mainnet)
+of the sandbox standard setup in local.
+If you what to overwrite this should pass a Algodv2 and Indexer instance in the Reader constructor.
 
 ```javascript
-// Algodv2 client using sandbox
-const token = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
-const server = 'http://localhost'
-const port = 4001
-const algodClient = new algosdk.Algodv2(token, server, port)
-
-// Indexer client using sandbox
-const token = ''
-const server = 'http://localhost'
-const port = 8980
-const indexerClient = new algosdk.Indexer(token, server, port)
-
-// Algodv2 client using a provider like AlgoNode on testnet
-const token = ''
-const server = 'https://testnet-api.algonode.cloud'
-const port = 443
-const client = new algosdk.Algodv2(token, server, port)
-
-// Indexer client using a provider like AlgoNode on testnet
-const token = ''
-const server = 'https://testnet-idx.algonode.cloud'
-const port = 443
-const indexerClient = new algosdk.Indexer(token, server, port)
+// Simple start
+const reader = new Reader(ENetworks.TESTNET)
+// OR
+const algod = new algosdk.Algodv2('a'.repeat(64), 'http://localhost', 4001)
+const indexer = new algosdk.Indexer('', 'http://localhost', 8980)
+const reader = new Reader(ENetworks.TESTNET, algod, indexer)
 ```
 
 ## Examples
@@ -46,26 +31,18 @@ const indexerClient = new algosdk.Indexer(token, server, port)
 ### Get account balance and min balance
 
 ```javascript
-import * as reader from 'algorand-reader'
-
-const address = 'SXPXEGTVZBIU56NDZC6HA3HZVHAD7CSYECQ2RIKYLMB6KOG43K7UBRGFPI'
-
-const token = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
-const server = 'http://localhost'
-const port = 4001
-const client = new algosdk.Algodv2(token, server, port)
-
+import { Reader } from 'algorand-reader'
 // Check if an account is valid
 await reader.validateAddress(address)
 
 // Get balance in algos
-await reader.getBalanceAlgos(client, address)
+await reader.getBalanceAlgos(address)
 
 // Get balance in microalgos
-await reader.getBalanceMicroalgos(client, address)
+await reader.getBalanceMicroalgos(address)
 
 // Get min balance
-await reader.getMinBalance(client, address)
+await reader.getMinBalance(address)
 ```
 
 ### Get asa account balance and check if the account is opt-in
@@ -74,30 +51,30 @@ await reader.getMinBalance(client, address)
 const asaId = 113619241
 
 // Get created asset by an account
-await reader.getCreatedAssets(client, address)
+await reader.getCreatedAssets(address)
 
 // Get asa balance from an account
-await reader.getAsaBalance(client, address, asaId)
+await reader.getAsaBalance(address, asaId)
 
 // Check if the account is opted-in to an asa
-await reader.isOptIn(client, address, asaId)
+await reader.isOptIn(address, asaId)
 
 // Get circulating supply of an asa
-await reader.getTokenCirculatingSupply(client, testId)
+await reader.getTokenCirculatingSupply(testId)
+
+// Get metadata from an asa with ARC-69 standard
+const nftId = 117345116
+await reader.getAssetMetadata(indexerClient, nftId)
 ```
 
-### Get metadata from an asa with ARC-69 standard
+### Transactions
 
 ```javascript
-const token = ''
-const server = 'http://localhost'
-const port = 8980
-const indexerClient = new algosdk.Indexer(token, server, port)
+// Get the pending transactions for a given account
+await reader.getPendingTx(address)
 
-const nftId = 117345116
-
-// Get metadata from the NFT
-await reader.getAssetMetadata(indexerClient, nftId)
+// Get a true if the account has pending transactions
+await reader.thereArePendingTxs(address)
 ```
 
 ### Feel free to file issues, PR and make suggestions, Thanks! 🚀

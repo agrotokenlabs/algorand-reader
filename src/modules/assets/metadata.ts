@@ -1,5 +1,5 @@
 import { Indexer, Algodv2 } from 'algosdk'
-import { AssetInfo } from './common/types'
+import { AssetInfo } from '../common/types'
 import { createHash } from 'crypto'
 import { getCreatedAssets } from './assets'
 
