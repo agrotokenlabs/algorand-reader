@@ -1,6 +1,5 @@
 import { Indexer, Algodv2 } from 'algosdk'
-import { AssetInfo } from './common/types'
-import { createHash } from 'crypto'
+import { AssetInfo } from '../common/types'
 import { getCreatedAssets } from './assets'
 
 function getAndDecodeNote(txRecord: unknown) {
