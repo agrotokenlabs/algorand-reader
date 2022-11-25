@@ -1,5 +1,4 @@
-import { Reader } from '../reader'
-import { ENetworks } from '../modules/common'
+import { ENetworks, Reader } from '../'
 import * as test from './testConfig'
 
 describe('AssetsTest: Happy Path', () => {
