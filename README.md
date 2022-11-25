@@ -1,4 +1,4 @@
-# Algorand Reader v1.1.0
+# Algorand Reader v1.1.1
 
 Algorand reader provides a set of functions to read the Algorand blockchain status.
 It allows to get balances, check opt-in, get nft metadata ARC-69 compliant and more.
@@ -19,6 +19,7 @@ If you what to overwrite this should pass a Algodv2 and Indexer instance in the 
 
 ```javascript
 // Simple start
+import { Reader, ENetworks } from 'algorand-reader'
 const reader = new Reader(ENetworks.TESTNET)
 // OR
 const algod = new algosdk.Algodv2('a'.repeat(64), 'http://localhost', 4001)
@@ -28,7 +29,7 @@ const reader = new Reader(ENetworks.TESTNET, algod, indexer)
 
 ## Examples
 
-### Get account balance and min balance
+### Account
 
 ```javascript
 import { Reader } from 'algorand-reader'
@@ -45,7 +46,7 @@ await reader.getBalanceMicroalgos(address)
 await reader.getMinBalance(address)
 ```
 
-### Get asa account balance and check if the account is opt-in
+### Assets
 
 ```javascript
 const asaId = 113619241
