@@ -1,22 +1,14 @@
-import algosdk from 'algosdk'
+import { Provider } from './providers'
 import * as accounts from './accounts'
 import * as assets from './assets'
 import * as common from './common'
 import * as transactions from './transactions'
 
 export class Reader {
-  algod: algosdk.Algodv2
-  indexer: algosdk.Indexer
-  network: common.ENetworks
+  provider: Provider
 
-  constructor(
-    network: common.ENetworks,
-    algod?: algosdk.Algodv2,
-    indexer?: algosdk.Indexer
-  ) {
-    this.algod = algod ?? common.getAlgodClient(network)
-    this.indexer = indexer ?? common.getIndexerClient(network)
-    this.network = network
+  constructor(provider: Provider) {
+    this.provider = provider
   }
 
   /** Receive an string, return true if it is a valid Algorand address */
@@ -26,40 +18,40 @@ export class Reader {
 
   /** Receive a algorand valid address and return the amount of algos that account holds */
   async getBalanceAlgos(address: string): Promise<number> {
-    return accounts.getBalanceAlgos(this.algod, address)
+    return accounts.getBalanceAlgos(this.provider.client, address)
   }
 
   /** Receive a algorand valid address and return
    * the amount of microalgos that account holds */
   async getBalanceMicroalgos(address: string): Promise<number> {
-    return accounts.getBalanceMicroalgos(this.algod, address)
+    return accounts.getBalanceMicroalgos(this.provider.client, address)
   }
 
   /** Receive an address and return the minimum balance necessaries */
   async getMinBalance(address: string): Promise<number> {
-    return accounts.getMinBalance(this.algod, address)
+    return accounts.getMinBalance(this.provider.client, address)
   }
 
   /** Receive a client and address,
    * return all the created asset by that address */
   async getCreatedAssets(address: string): Promise<common.AssetInfo[]> {
-    return assets.getCreatedAssets(this.algod, address)
+    return assets.getCreatedAssets(this.provider.client, address)
   }
 
   /** Receive a algorand valid address and asaId then return the amount that account holds */
   async getAsaBalance(address: string, asaId: number): Promise<number> {
-    return assets.getAsaBalance(this.algod, address, asaId)
+    return assets.getAsaBalance(this.provider.client, address, asaId)
   }
 
   /** Receive a algorand valid address and asaId
    * then return the optInState */
   async isOptIn(address: string, asaId: number): Promise<boolean> {
-    return assets.isOptIn(this.algod, address, asaId)
+    return assets.isOptIn(this.provider.client, address, asaId)
   }
 
   /** Receive a token return the circulating supply of the token */
   async getTokenCirculatingSupply(asaId: number): Promise<number> {
-    return assets.getTokenCirculatingSupply(this.algod, asaId)
+    return assets.getTokenCirculatingSupply(this.provider.client, asaId)
   }
 
   /** Lookup an asset id using the metadataHash if the asset have one */
@@ -67,13 +59,13 @@ export class Reader {
     hash: string,
     creator: string
   ): Promise<number> {
-    return assets.getAssetIdByMetadataHash(this.algod, hash, creator)
+    return assets.getAssetIdByMetadataHash(this.provider.client, hash, creator)
   }
 
   /** Returns the metadata stored in the creation tx of an asa
    * Using the ARC-69 standard for NFT metadata. */
   async getAssetMetadata(assetId: number): Promise<string> {
-    return assets.getAssetMetadata(this.indexer, assetId)
+    return assets.getAssetMetadata(this.provider.indexer, assetId)
   }
 
   /** Returns the pending transactions for an address
@@ -81,12 +73,12 @@ export class Reader {
    *  'total-transactions': number
    */
   async getPendingTx(address: string): Promise<unknown> {
-    return transactions.getPendingTxByAddress(this.algod, address)
+    return transactions.getPendingTxByAddress(this.provider.client, address)
   }
 
   /** Returns true if there is
    * the pending transactions for an address */
   async thereArePendingTxs(address: string): Promise<boolean> {
-    return transactions.thereArePendingTxs(this.algod, address)
+    return transactions.thereArePendingTxs(this.provider.client, address)
   }
 }

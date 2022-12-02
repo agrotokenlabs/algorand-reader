@@ -1,8 +1,10 @@
+import { AlgoNode } from '../modules/providers'
 import { ENetworks, Reader } from '../'
 import * as test from './testConfig'
 
 describe('AccountsTest: happy path', () => {
-  const reader = new Reader(ENetworks.TESTNET)
+  const provider = new AlgoNode(ENetworks.TESTNET)
+  const reader = new Reader(provider)
 
   it('Should return True if the address is valid', async () => {
     const isValid = await reader.validateAddress(test.address)
@@ -38,7 +40,8 @@ describe('AccountsTest: happy path', () => {
 })
 
 describe('AccountsTest: unhappy path', () => {
-  const reader = new Reader(ENetworks.TESTNET)
+  const provider = new AlgoNode(ENetworks.TESTNET)
+  const reader = new Reader(provider)
 
   it('Should throw an error if the address is not valid: getBalanceMicroalgo', async () => {
     expect.assertions(1)

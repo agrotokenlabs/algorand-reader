@@ -1,8 +1,10 @@
 import { ENetworks, Reader } from '../'
+import { AlgoNode } from '../modules/providers'
 import * as test from './testConfig'
 
 describe('AssetsTest: Happy Path', () => {
-  const reader = new Reader(ENetworks.TESTNET)
+  const provider = new AlgoNode(ENetworks.TESTNET)
+  const reader = new Reader(provider)
 
   it('Should get all the asset crated by a waller', async () => {
     const createdAssets = await reader.getCreatedAssets(test.address)
@@ -59,7 +61,8 @@ describe('AssetsTest: Happy Path', () => {
 })
 
 describe('AssetsTest: Unhappy Path', () => {
-  const reader = new Reader(ENetworks.TESTNET)
+  const provider = new AlgoNode(ENetworks.TESTNET)
+  const reader = new Reader(provider)
 
   it('Should throw an error if the address is not valid: getCreatedAssets', async () => {
     await expect(
