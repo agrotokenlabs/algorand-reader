@@ -1,4 +1,4 @@
-import { ENetworks } from '../common'
+import { ENetworks } from '../common/types'
 import { Provider, ProviderOnlyClient } from './provider'
 
 export class AlgoNodeOnlyClient extends ProviderOnlyClient {

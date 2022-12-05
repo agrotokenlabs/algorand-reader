@@ -1,5 +1,4 @@
-import { ENetworks, Reader } from '../'
-import { AlgoNode } from '../modules/providers'
+import { ENetworks, Reader, AlgoNode } from '../index'
 import * as test from './testConfig'
 
 describe('AssetsTest: Happy Path', () => {
