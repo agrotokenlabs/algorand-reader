@@ -1,4 +1,4 @@
-# Algorand Reader v1.1.1
+# Algorand Reader v1.1.2
 
 Algorand reader provides a set of functions to read the Algorand blockchain status.
 It allows to get balances, check opt-in, get nft metadata ARC-69 compliant and more.
@@ -13,18 +13,31 @@ npm install algorand-reader
 
 ## Requisites
 
-Most of the functions uses an Algodv2 client and an Indexer client, if you don't specifies any the reader will use default algonode service (Testnet and Mainnet)
-of the sandbox standard setup in local.
-If you what to overwrite this should pass a Algodv2 and Indexer instance in the Reader constructor.
+Most of the functions requires a provider like an Algodv2 client and an Index client.
+You could provide a custom client or initialize an know service provider like Algonode or use sandbox.
 
 ```javascript
-// Simple start
-import { Reader, ENetworks } from 'algorand-reader'
-const reader = new Reader(ENetworks.TESTNET)
-// OR
-const algod = new algosdk.Algodv2('a'.repeat(64), 'http://localhost', 4001)
-const indexer = new algosdk.Indexer('', 'http://localhost', 8980)
-const reader = new Reader(ENetworks.TESTNET, algod, indexer)
+// Simple start with Algonode
+import { Reader, ENetworks, AlgoNode } from 'algorand-reader'
+const provider = new AlgoNode(ENetworks.TESTNET)
+const reader = new Reader(provider)
+
+// OR with Sandbox
+import { Reader, ENetworks, Sandbox } from 'algorand-reader'
+const provider = new Sandbox()
+const reader = new Reader(provider)
+
+// OR using a custom provider
+import { Reader, ENetworks, Provider } from 'algorand-reader'
+const provider = new Provider(
+  'a'.repeat(64), // Algodv2-token
+  'http://localhost', // Algodv2-server
+  4001, // Algodv2-port
+  '', // Indexer-token
+  'http://localhost', // Indexer-server
+  8980 // Indexer-port
+)
+const reader = new Reader(provider)
 ```
 
 ## Examples

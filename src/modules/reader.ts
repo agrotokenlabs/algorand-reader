@@ -1,65 +1,58 @@
-import algosdk from 'algosdk'
-import * as accounts from './accounts'
-import * as assets from './assets'
-import * as common from './common'
-import * as transactions from './transactions'
+import { Provider } from './providers'
+import Accounts from './accounts/accounts'
+import Transactions from './transactions/transactions'
+import Assets from './assets/assets'
+import Metadata from './assets/metadata'
+import * as common from './common/types'
 
 export class Reader {
-  algod: algosdk.Algodv2
-  indexer: algosdk.Indexer
-  network: common.ENetworks
+  provider: Provider
 
-  constructor(
-    network: common.ENetworks,
-    algod?: algosdk.Algodv2,
-    indexer?: algosdk.Indexer
-  ) {
-    this.algod = algod ?? common.getAlgodClient(network)
-    this.indexer = indexer ?? common.getIndexerClient(network)
-    this.network = network
+  constructor(provider: Provider) {
+    this.provider = provider
   }
 
   /** Receive an string, return true if it is a valid Algorand address */
   async validateAddress(address: string) {
-    return accounts.validateAddress(address)
+    return Accounts.validateAddress(address)
   }
 
   /** Receive a algorand valid address and return the amount of algos that account holds */
   async getBalanceAlgos(address: string): Promise<number> {
-    return accounts.getBalanceAlgos(this.algod, address)
+    return Accounts.getBalanceAlgos(this.provider.client, address)
   }
 
   /** Receive a algorand valid address and return
    * the amount of microalgos that account holds */
   async getBalanceMicroalgos(address: string): Promise<number> {
-    return accounts.getBalanceMicroalgos(this.algod, address)
+    return Accounts.getBalanceMicroalgos(this.provider.client, address)
   }
 
   /** Receive an address and return the minimum balance necessaries */
   async getMinBalance(address: string): Promise<number> {
-    return accounts.getMinBalance(this.algod, address)
+    return Accounts.getMinBalance(this.provider.client, address)
   }
 
   /** Receive a client and address,
    * return all the created asset by that address */
   async getCreatedAssets(address: string): Promise<common.AssetInfo[]> {
-    return assets.getCreatedAssets(this.algod, address)
+    return Assets.getCreatedAssets(this.provider.client, address)
   }
 
   /** Receive a algorand valid address and asaId then return the amount that account holds */
   async getAsaBalance(address: string, asaId: number): Promise<number> {
-    return assets.getAsaBalance(this.algod, address, asaId)
+    return Assets.getAsaBalance(this.provider.client, address, asaId)
   }
 
   /** Receive a algorand valid address and asaId
    * then return the optInState */
   async isOptIn(address: string, asaId: number): Promise<boolean> {
-    return assets.isOptIn(this.algod, address, asaId)
+    return Assets.isOptIn(this.provider.client, address, asaId)
   }
 
   /** Receive a token return the circulating supply of the token */
   async getTokenCirculatingSupply(asaId: number): Promise<number> {
-    return assets.getTokenCirculatingSupply(this.algod, asaId)
+    return Assets.getTokenCirculatingSupply(this.provider.client, asaId)
   }
 
   /** Lookup an asset id using the metadataHash if the asset have one */
@@ -67,13 +60,17 @@ export class Reader {
     hash: string,
     creator: string
   ): Promise<number> {
-    return assets.getAssetIdByMetadataHash(this.algod, hash, creator)
+    return Metadata.getAssetIdByMetadataHash(
+      this.provider.client,
+      hash,
+      creator
+    )
   }
 
   /** Returns the metadata stored in the creation tx of an asa
    * Using the ARC-69 standard for NFT metadata. */
   async getAssetMetadata(assetId: number): Promise<string> {
-    return assets.getAssetMetadata(this.indexer, assetId)
+    return Metadata.getAssetMetadata(this.provider.indexer, assetId)
   }
 
   /** Returns the pending transactions for an address
@@ -81,12 +78,12 @@ export class Reader {
    *  'total-transactions': number
    */
   async getPendingTx(address: string): Promise<unknown> {
-    return transactions.getPendingTxByAddress(this.algod, address)
+    return Transactions.getPendingTxByAddress(this.provider.client, address)
   }
 
   /** Returns true if there is
    * the pending transactions for an address */
   async thereArePendingTxs(address: string): Promise<boolean> {
-    return transactions.thereArePendingTxs(this.algod, address)
+    return Transactions.thereArePendingTxs(this.provider.client, address)
   }
 }
