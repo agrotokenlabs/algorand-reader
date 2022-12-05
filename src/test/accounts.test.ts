@@ -47,10 +47,8 @@ describe('AccountsTest: unhappy path', () => {
     try {
       await reader.getBalanceMicroalgos(test.nonValidAddress)
     } catch (e) {
-      expect(e).toEqual(
-        Error(
-          'Network request error. Received status 400: failed to parse the address'
-        )
+      expect(e.message).toBe(
+        'Network request error. Received status 400 (Bad Request): failed to parse the address'
       )
     }
   })
@@ -60,10 +58,8 @@ describe('AccountsTest: unhappy path', () => {
     try {
       await reader.getBalanceAlgos(test.nonValidAddress)
     } catch (e) {
-      expect(e).toEqual(
-        Error(
-          'Network request error. Received status 400: failed to parse the address'
-        )
+      expect(e.message).toBe(
+        'Network request error. Received status 400 (Bad Request): failed to parse the address'
       )
     }
   })
@@ -73,10 +69,8 @@ describe('AccountsTest: unhappy path', () => {
     try {
       await reader.getMinBalance(test.nonValidAddress)
     } catch (e) {
-      expect(e).toEqual(
-        Error(
-          'Network request error. Received status 400: failed to parse the address'
-        )
+      expect(e.message).toBe(
+        'Network request error. Received status 400 (Bad Request): failed to parse the address'
       )
     }
   })
