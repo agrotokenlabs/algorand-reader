@@ -1,7 +1,7 @@
 import { ENetworks, Reader, AlgoNode } from '../index'
 import * as test from './testConfig'
 
-describe('TransactionTest: happy path', () => {
+describe('TransactionTest Reader: happy path', () => {
   const provider = new AlgoNode(ENetworks.TESTNET)
   const reader = new Reader(provider)
 

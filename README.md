@@ -1,4 +1,4 @@
-# Algorand Reader v1.1.2
+# Algorand Reader v1.1.3
 
 Algorand reader provides a set of functions to read the Algorand blockchain status.
 It allows to get balances, check opt-in, get nft metadata ARC-69 compliant and more.

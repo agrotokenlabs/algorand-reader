@@ -1,9 +1,9 @@
-import { ENetworks, Reader, AlgoNode } from '../index'
+import { ENetworks, AlgoNodeOnlyClient, ReaderOnlyClient } from '../index'
 import * as test from './testConfig'
 
-describe('TransactionTest::Reader: happy path', () => {
-  const provider = new AlgoNode(ENetworks.TESTNET)
-  const reader = new Reader(provider)
+describe('TransactionTest::ReaderOnlyClient: happy path', () => {
+  const provider = new AlgoNodeOnlyClient(ENetworks.TESTNET)
+  const reader = new ReaderOnlyClient(provider)
 
   it('Should return the pending txs from an account', async () => {
     const pendingTxs = await reader.getPendingTx(test.address)
